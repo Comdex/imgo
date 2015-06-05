@@ -1,6 +1,7 @@
 package imgo
 
 import (
+	"errors"
 	"math"
 	"image"
 	"runtime"
@@ -396,5 +397,31 @@ func New3DSlice(x int , y int , z int)(theSlice [][][]uint8){
 // create a new rgba matrix
 func NewRGBAMatrix(x int,y int)(rgbaMatrix [][][]uint8){
 	rgbaMatrix = New3DSlice(x,y,4)
+	return
+}
+
+type IterFunc func(i int, j int, k int, src [][][]uint8)[][][]uint8
+
+func Iterator(filepath string, iter IterFunc)(imgMatrix [][][]uint8, err error ){
+	imgMatrix,err = Read(filepath)
+	if err != nil {
+		return 
+	}
+	
+	height:=len(imgMatrix)
+	width:=len(imgMatrix[0])
+	pix:=len(imgMatrix[0][0])
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+		return
+	}
+	
+	for i:=0; i<height; i++ {
+		for j:=0; j<width; j++ {
+			for k:=0; k<pix; k++ {
+				imgMatrix = iter(i,j,k,imgMatrix)
+			}
+		}
+	}
 	return
 }
