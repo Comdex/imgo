@@ -263,8 +263,8 @@ func SaveAsPNG(filepath string , imgMatrix [][][]uint8) error {
 	height:=len(imgMatrix)
 	width:=len(imgMatrix[0])
 	
-	if height == 0 {
-		return errors.New("imgMatrix is a null matrix!")
+	if height == 0 || width == 0 {
+		return errors.New("The input of matrix is illegal!")
 	}
 	
 	nrgba:=image.NewNRGBA(image.Rect(0,0,width,height))
@@ -291,8 +291,8 @@ func SaveAsJPEG(filepath string , imgMatrix [][][]uint8) error {
 	height:=len(imgMatrix)
 	width:=len(imgMatrix[0])
 	
-	if height == 0 {
-		return errors.New("imgMatrix is a null matrix!")
+	if height == 0 || width == 0 {
+		return errors.New("The input of matrix is illegal!")
 	}
 	
 	nrgba:=image.NewNRGBA(image.Rect(0,0,width,height))
