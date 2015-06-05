@@ -123,3 +123,46 @@ func VerticalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 	
 	return
 }
+
+func HorizontalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
+	imgMatrix = src
+	
+	height:=len(imgMatrix)
+	width:=len(imgMatrix[0])
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
+	
+	mirror_h:=height/2
+	
+	for i:=0;i<mirror_h;i++{
+		for j:=0;j<width;j++{
+		imgMatrix[height-i-1][j][0] = imgMatrix[i][j][0]
+		imgMatrix[height-i-1][j][1] = imgMatrix[i][j][1]
+		imgMatrix[height-i-1][j][2] = imgMatrix[i][j][2]
+		}
+	}
+	
+	return
+}
+
+func RGB2Gray(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
+	imgMatrix = src
+	
+	height:=len(imgMatrix)
+	width:=len(imgMatrix[0])
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
+	
+	for i:=0;i<height;i++{
+		for j:=0;j<width;j++{
+		avg:=(imgMatrix[i][j][0]+imgMatrix[i][j][1]+imgMatrix[i][j][3])/3
+		imgMatrix[i][j][0] = avg
+		imgMatrix[i][j][1] = avg
+		imgMatrix[i][j][2] = avg
+		}
+	}
+	
+	return
+}
