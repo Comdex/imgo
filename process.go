@@ -76,6 +76,7 @@ func AdjustBrightness(src string , light float64)(imgMatrix [][][]uint8 , err er
 	return
 }
 
+// fuse two images and the size of new image is as src1
 func ImageFusion(src1 string , src2 string)(imgMatrix [][][]uint8 , err error) {
 	imgMatrix1,err1 := Read(src1)
 	
