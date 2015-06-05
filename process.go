@@ -103,6 +103,71 @@ func ImageFusion(src1 string , src2 string)(imgMatrix [][][]uint8 , err error) {
 
 
 func VerticalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
+	height:=len(src)
+	width:=len(src[0])
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
+	
+	newwidth:=width*2
+	imgMatrix=NewRGBAMatrix(height,newwidth)
+	
+	for i:=0;i<height;i++{
+		for j:=0;j<width;j++{
+		imgMatrix[i][j][0] = src[i][j][0]
+		imgMatrix[i][j][1] = src[i][j][1]
+		imgMatrix[i][j][2] = src[i][j][2]
+		imgMatrix[i][j][3] = src[i][j][3]
+		}
+	}
+	
+	
+	for i:=0;i<height;i++{
+		for j:=width;j<newwidth;j++{
+			imgMatrix[i][j][0] = imgMatrix[i][newwidth-j-1][0]
+			imgMatrix[i][j][1] = imgMatrix[i][newwidth-j-1][1]
+			imgMatrix[i][j][2] = imgMatrix[i][newwidth-j-1][2]
+			imgMatrix[i][j][3] = imgMatrix[i][newwidth-j-1][3]
+		}
+	}
+	
+	return
+}
+
+func HorizontalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
+	height:=len(src)
+	width:=len(src[0])
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
+	
+	newheight:=height*2
+	imgMatrix=NewRGBAMatrix(newheight,width)
+	
+	for i:=0;i<height;i++{
+		for j:=0;j<width;j++{
+		imgMatrix[i][j][0] = src[i][j][0]
+		imgMatrix[i][j][1] = src[i][j][1]
+		imgMatrix[i][j][2] = src[i][j][2]
+		imgMatrix[i][j][3] = src[i][j][3]
+		}
+	}
+	
+	
+	for i:=height;i<newheight;i++{
+		for j:=0;j<width;j++{
+			imgMatrix[i][j][0] = imgMatrix[newheight-i-1][j][0]
+			imgMatrix[i][j][1] = imgMatrix[newheight-i-1][j][1]
+			imgMatrix[i][j][2] = imgMatrix[newheight-i-1][j][2]
+			imgMatrix[i][j][3] = imgMatrix[newheight-i-1][j][3]
+		}
+	}
+	
+	return
+}
+
+
+func VerticalMirrorPart(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 	imgMatrix = src
 	
 	height:=len(imgMatrix)
@@ -124,7 +189,8 @@ func VerticalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 	return
 }
 
-func HorizontalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
+
+func HorizontalMirrorPart(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 	imgMatrix = src
 	
 	height:=len(imgMatrix)
@@ -145,6 +211,7 @@ func HorizontalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 	
 	return
 }
+
 
 func RGB2Gray(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 	imgMatrix = src

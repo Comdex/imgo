@@ -395,8 +395,8 @@ func New3DSlice(x int , y int , z int)(theSlice [][][]uint8){
 }
 
 // create a new rgba matrix
-func NewRGBAMatrix(x int,y int)(rgbaMatrix [][][]uint8){
-	rgbaMatrix = New3DSlice(x,y,4)
+func NewRGBAMatrix(height int,width int)(rgbaMatrix [][][]uint8){
+	rgbaMatrix = New3DSlice(height,width,4)
 	return
 }
 
