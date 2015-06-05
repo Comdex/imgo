@@ -4,17 +4,15 @@ import (
 	"errors"
 )
 
-//input a image as src , return a image matrix by sunseteffect process
-func SunsetEffect(src string)(imgMatrix [][][]uint8 , err error) {
-	imgMatrix,err = Read(src)
-	
-	if err != nil {
-		return 
-	}
+//input a image matrix as src , return a image matrix by sunseteffect process
+func SunsetEffect(src [][][]uint8)(imgMatrix [][][]uint8 , err error) {
+	imgMatrix = src
 	
 	height:=len(imgMatrix)
 	width:=len(imgMatrix[0])
-	
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -27,16 +25,14 @@ func SunsetEffect(src string)(imgMatrix [][][]uint8 , err error) {
 }
 
 // input a image as src , return a image matrix by negativefilmeffect process
-func NegativeFilmEffect(src string)(imgMatrix [][][]uint8 , err error) {
-	imgMatrix,err = Read(src)
-	
-	if err != nil {
-		return 
-	}
+func NegativeFilmEffect(src [][][]uint8)(imgMatrix [][][]uint8 , err error) {
+	imgMatrix = src
 	
 	height:=len(imgMatrix)
 	width:=len(imgMatrix[0])
-	
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -49,12 +45,8 @@ func NegativeFilmEffect(src string)(imgMatrix [][][]uint8 , err error) {
 	return
 }
 
-func AdjustBrightness(src string , light float64)(imgMatrix [][][]uint8 , err error) {
-	imgMatrix,err = Read(src)
-	
-	if err != nil {
-		return 
-	}
+func AdjustBrightness(src [][][]uint8 , light float64)(imgMatrix [][][]uint8 , err error) {
+	imgMatrix = src
 	
 	if light <= 0{
 		err = errors.New("value of light must be more than 0")
@@ -63,7 +55,9 @@ func AdjustBrightness(src string , light float64)(imgMatrix [][][]uint8 , err er
 	
 	height:=len(imgMatrix)
 	width:=len(imgMatrix[0])
-	
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -76,7 +70,7 @@ func AdjustBrightness(src string , light float64)(imgMatrix [][][]uint8 , err er
 	return
 }
 
-// fuse two images and the size of new image is as src1
+// fuse two images(filepath) and the size of new image is as src1
 func ImageFusion(src1 string , src2 string)(imgMatrix [][][]uint8 , err error) {
 	imgMatrix1,err1 := Read(src1)
 	
@@ -105,4 +99,27 @@ func ImageFusion(src1 string , src2 string)(imgMatrix [][][]uint8 , err error) {
 	}
 	imgMatrix = imgMatrix1
 	return	
+}
+
+
+func VerticalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
+	imgMatrix = src
+	
+	height:=len(imgMatrix)
+	width:=len(imgMatrix[0])
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
+	
+	mirror_w:=width/2
+	
+	for i:=0;i<height;i++{
+		for j:=0;j<mirror_w;j++{
+			imgMatrix[i][j][0] = imgMatrix[i][width-j-1][0]
+			imgMatrix[i][j][1] = imgMatrix[i][width-j-1][1]
+			imgMatrix[i][j][2] = imgMatrix[i][width-j-1][2]
+		}
+	}
+	
+	return
 }
