@@ -214,6 +214,27 @@ func RGB2Gray(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 		imgMatrix[i][j][2] = avg
 		}
 	}
+	return
+}
+
+// set the opacity of image matrix , opacity must be 0.0 to 1.0
+func SetOpacity(src [][][]uint8, opacity float64)(imgMatrix [][][]uint8 , err error){
+	imgMatrix = src
 	
+	height:=len(imgMatrix)
+	width:=len(imgMatrix[0])
+	if height == 0 || width == 0 {
+		err = errors.New("The input of matrix is illegal!")
+	}
+	
+	if opacity < 0.0 || opacity > 1.0 {
+		err = errors.New("the opacity is illegal!")
+	}
+	
+	for i:=0;i<height;i++{
+		for j:=0;j<width;j++{
+		imgMatrix[i][j][3] = uint8(float64(imgMatrix[i][j][3])*opacity)
+		}
+	}
 	return
 }
