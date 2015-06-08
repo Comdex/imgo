@@ -175,7 +175,7 @@ func VerticalMirrorPart(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 	return
 }
 
-
+//make a mirror of src 
 func HorizontalMirrorPart(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 	imgMatrix = src
 	
