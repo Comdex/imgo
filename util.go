@@ -400,6 +400,35 @@ func NewRGBAMatrix(height int,width int)(rgbaMatrix [][][]uint8){
 	return
 }
 
+func Matrix2Vector(imgMatrix [][][]uint8)(vector []uint8){
+	h:=len(imgMatrix)
+	w:=len(imgMatrix[0])
+	r:=len(imgMatrix[0][0])
+	length:=h*w*r
+	
+	vector = make([]uint8,length)
+	
+	for i:=0; i<h; i++ {
+		for j:=0; j<w; j++ {
+			for k:=0; k<r-1; k++ {
+				vector = append(vector,imgMatrix[i][j][k])
+			}
+		}
+	}
+	return
+}
+
+func Dot(x []uint8, y []uint8) float64 {
+	xlen:=len(x)
+	
+	var sum float64 = 0
+	for i:=0; i<xlen; i++ {
+			sum = sum + float64(x[i])*float64(y[i])
+			
+	}
+	return sum
+}
+
 type IterFunc func(i int, j int, k int, src [][][]uint8)[][][]uint8
 
 func Iterator(filepath string, iter IterFunc)(imgMatrix [][][]uint8, err error ){
