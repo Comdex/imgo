@@ -5,14 +5,12 @@ import (
 )
 
 //input a image matrix as src , return a image matrix by sunseteffect process
-func SunsetEffect(src [][][]uint8)(imgMatrix [][][]uint8 , err error) {
-	imgMatrix = src
+func SunsetEffect(src [][][]uint8) [][][]uint8 {
 	
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
+	height := len(src)
+	width := len(src[0])
+	imgMatrix := NewRGBAMatrix(height,width)
+	copy(imgMatrix,src)
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -21,18 +19,16 @@ func SunsetEffect(src [][][]uint8)(imgMatrix [][][]uint8 , err error) {
 		}
 	}
 	
-	return
+	return imgMatrix
 }
 
 // input a image as src , return a image matrix by negativefilmeffect process
-func NegativeFilmEffect(src [][][]uint8)(imgMatrix [][][]uint8 , err error) {
-	imgMatrix = src
+func NegativeFilmEffect(src [][][]uint8) [][][]uint8 {
 	
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
+	height := len(src)
+	width := len(src[0])
+	imgMatrix := NewRGBAMatrix(height,width)
+	copy(imgMatrix,src)
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -42,22 +38,20 @@ func NegativeFilmEffect(src [][][]uint8)(imgMatrix [][][]uint8 , err error) {
 		}
 	}
 	
-	return
+	return imgMatrix
 }
 
 func AdjustBrightness(src [][][]uint8 , light float64)(imgMatrix [][][]uint8 , err error) {
-	imgMatrix = src
 	
 	if light <= 0{
 		err = errors.New("value of light must be more than 0")
 		return
 	}
 	
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
+	height := len(src)
+	width := len(src[0])
+	imgMatrix = NewRGBAMatrix(height,width)
+	copy(imgMatrix,src)
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -103,11 +97,10 @@ func ImageFusion(src1 string , src2 string)(imgMatrix [][][]uint8 , err error) {
 
 
 func VerticalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
-	height:=len(src)
-	width:=len(src[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
+	height := len(src)
+	width := len(src[0])
+	imgMatrix := NewRGBAMatrix(height,width)
+	copy(imgMatrix,src)
 	
 	newwidth:=width*2
 	imgMatrix=NewRGBAMatrix(height,newwidth)
