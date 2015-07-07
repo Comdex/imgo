@@ -1,3 +1,4 @@
+//package imgo is a golang image process lib
 package imgo
 
 import (
