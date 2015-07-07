@@ -37,6 +37,22 @@ func main(){
 	}
 }
 ```
+### 效果
+
+#### 原图
+![](example/test.jpg)          
+#### 日落
+![](example/sunsetEffect.jpg)          imgo.SunsetEffect
+#### 负片
+![](example/negativeFilmEffect.jpg)    imgo.NegativeFilmEffect
+#### 调整亮度
+![](example/adjustlight.jpg)           imgo.AdjustBrightness
+#### 垂直镜像
+![](example/verticalMirror.jpg)        imgo.VerticalMirror
+#### 横向镜像
+![](example/HorizontalMirror.jpg)      imgo.HorizontalMirror
+
+更多api及帮助请访问：http://godoc.org/github.com/Comdex/imgo
 
 ### 版权
 
