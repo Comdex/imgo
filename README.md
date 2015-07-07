@@ -39,18 +39,20 @@ func main(){
 ```
 ### 效果
 
-#### 原图
-![](example/test.jpg)          
-#### 日落
-![](example/sunsetEffect.jpg)          imgo.SunsetEffect
-#### 负片
-![](example/negativeFilmEffect.jpg)    imgo.NegativeFilmEffect
-#### 调整亮度
-![](example/adjustlight.jpg)           imgo.AdjustBrightness
-#### 垂直镜像
-![](example/verticalMirror.jpg)        imgo.VerticalMirror
-#### 横向镜像
-![](example/HorizontalMirror.jpg)      imgo.HorizontalMirror
+<table>
+<tr>
+<th><img src="example/test.jpg" /><br>原图</th>
+<th><img src="example/HorizontalMirror.jpg" /><br>横向镜像imgo.HorizontalMirror</th>
+</tr>
+<tr>
+<th><img src="example/sunsetEffect.jpg" /><br>日落imgo.SunsetEffect</th>
+<th><img src="example/negativeFilmEffect.jpg" /><br>负片imgo.NegativeFilmEffect</th>
+</tr>
+<tr>
+<th><img src="example/adjustlight.jpg" /><br>调整亮度imgo.AdjustBrightness</th>
+<th><img src="example/verticalMirror.jpg" /><br>垂直镜像imgo.VerticalMirror</th>
+</tr>
+</table>        
 
 更多api及帮助请访问：http://godoc.org/github.com/Comdex/imgo
 
