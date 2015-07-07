@@ -96,14 +96,12 @@ func ImageFusion(src1 string , src2 string)(imgMatrix [][][]uint8 , err error) {
 }
 
 
-func VerticalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
+func VerticalMirror(src [][][]uint8) [][][]uint8 {
 	height := len(src)
 	width := len(src[0])
-	imgMatrix := NewRGBAMatrix(height,width)
-	copy(imgMatrix,src)
 	
 	newwidth:=width*2
-	imgMatrix=NewRGBAMatrix(height,newwidth)
+	imgMatrix:=NewRGBAMatrix(height,newwidth)
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -118,18 +116,15 @@ func VerticalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 		}
 	}
 	
-	return
+	return imgMatrix
 }
 
-func HorizontalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
+func HorizontalMirror(src [][][]uint8) [][][]uint8 {
 	height:=len(src)
 	width:=len(src[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
 	
 	newheight:=height*2
-	imgMatrix=NewRGBAMatrix(newheight,width)
+	imgMatrix:=NewRGBAMatrix(newheight,width)
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -144,18 +139,16 @@ func HorizontalMirror(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 		}
 	}
 	
-	return
+	return imgMatrix
 }
 
 
-func VerticalMirrorPart(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
-	imgMatrix = src
+func VerticalMirrorPart(src [][][]uint8) [][][]uint8 {
 	
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
+	height := len(src)
+	width := len(src[0])
+	imgMatrix := NewRGBAMatrix(height,width)
+	copy(imgMatrix,src)
 	
 	mirror_w:=width/2
 	
@@ -165,18 +158,15 @@ func VerticalMirrorPart(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 		}
 	}
 	
-	return
+	return imgMatrix
 }
 
 //make a mirror of src 
-func HorizontalMirrorPart(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
-	imgMatrix = src
-	
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
+func HorizontalMirrorPart(src [][][]uint8) [][][]uint8 {
+	height := len(src)
+	width := len(src[0])
+	imgMatrix := NewRGBAMatrix(height,width)
+	copy(imgMatrix,src)
 	
 	mirror_h:=height/2
 	
@@ -186,18 +176,15 @@ func HorizontalMirrorPart(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 		}
 	}
 	
-	return
+	return imgMatrix
 }
 
 
-func RGB2Gray(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
-	imgMatrix = src
-	
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
+func RGB2Gray(src [][][]uint8) [][][]uint8 {
+	height := len(src)
+	width := len(src[0])
+	imgMatrix := NewRGBAMatrix(height,width)
+	copy(imgMatrix,src)
 	
 	for i:=0;i<height;i++{
 		for j:=0;j<width;j++{
@@ -207,18 +194,15 @@ func RGB2Gray(src [][][]uint8)(imgMatrix [][][]uint8 , err error){
 		imgMatrix[i][j][2] = avg
 		}
 	}
-	return
+	return imgMatrix
 }
 
 // set the opacity of image matrix , opacity must be 0.0 to 1.0
 func SetOpacity(src [][][]uint8, opacity float64)(imgMatrix [][][]uint8 , err error){
-	imgMatrix = src
-	
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	if height == 0 || width == 0 {
-		err = errors.New("The input of matrix is illegal!")
-	}
+	height := len(src)
+	width := len(src[0])
+	imgMatrix = NewRGBAMatrix(height,width)
+	copy(imgMatrix,src)
 	
 	if opacity < 0.0 || opacity > 1.0 {
 		err = errors.New("the opacity is illegal!")

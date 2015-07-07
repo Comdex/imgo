@@ -19,20 +19,20 @@ import(
 )
 
 func main(){
-    //如果读取出错会panic,返回图像矩阵
-    //img[height][width][4],height为图像高度，width为图像宽度
+    //如果读取出错会panic,返回图像矩阵img
+    //img[height][width][4],height为图像高度,width为图像宽度
     //img[height][width][4]为第height行第width列上像素点的RGBA数值数组，值范围为0-255
-    img:=imgo.MustRead("test.jpg")
+	//如img[150][20][0]是150行20列处像素的红色值,img[150][20][1]是150行20列处像素的绿
+	//色值，img[150][20][2]是150行20列处像素的蓝色值,img[150][20][3]是150行20列处像素
+	//的alpha数值,一般用作不透明度参数,如果一个像素的alpha通道数值为0%，那它就是完全透明的.
+    img:=imgo.MustRead("example/test.jpg")
 	
 	//对原图像矩阵进行日落效果处理
-	img2,err:=imgo.SunsetEffect(img)
-	if err!=nil {
-		panic(err)
-	}
+	img2:=imgo.SunsetEffect(img)
 	
-	//保存为jpeg
-	err2:=imgo.SaveAsJPEG("new.jpg",img2)
-	if err2!=nil {
+	//保存为jpeg,100为质量，1-100
+	err:=imgo.SaveAsJPEG("example/new.jpg",img2,100)
+	if err!=nil {
 		panic(err)
 	}
 }

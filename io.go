@@ -286,14 +286,20 @@ func SaveAsPNG(filepath string , imgMatrix [][][]uint8) error {
 }
 
 
-// save a image matrix as a jpeg , if unsuccessful it will return a error
-func SaveAsJPEG(filepath string , imgMatrix [][][]uint8) error {
+// save a image matrix as a jpeg,if unsuccessful it will return a error,quality must be 1 to 100 
+func SaveAsJPEG(filepath string , imgMatrix [][][]uint8 , quality int) error {
 	height:=len(imgMatrix)
 	width:=len(imgMatrix[0])
 	
 	if height == 0 || width == 0 {
 		return errors.New("The input of matrix is illegal!")
 	}
+	
+	if quality < 1 {
+		quality = 1
+	} else if quality > 100 {
+		quality = 100
+	} 
 	
 	nrgba:=image.NewNRGBA(image.Rect(0,0,width,height))
 	
@@ -308,7 +314,7 @@ func SaveAsJPEG(filepath string , imgMatrix [][][]uint8) error {
 	}
 	defer outfile.Close()
 	
-	jpeg.Encode(outfile,nrgba,nil)
+	jpeg.Encode(outfile,nrgba,&jpeg.Options{Quality:quality})
 	
 	return nil
 }

@@ -29,11 +29,8 @@ func CosineSimilarity(src1 string, src2 string)(cossimi float64,err error){
 }
 
 //binaryzation process of image matrix , threshold can use 127 to test
-func Binaryzation(src [][][]uint8, threshold int)(imgMatrix [][][]uint8, err error) {
-	imgMatrix,err = RGB2Gray(src)
-	if err != nil {
-		return
-	}
+func Binaryzation(src [][][]uint8, threshold int) [][][]uint8 {
+	imgMatrix := RGB2Gray(src)
 	
 	height:=len(imgMatrix)
 	width:=len(imgMatrix[0])
@@ -51,5 +48,5 @@ func Binaryzation(src [][][]uint8, threshold int)(imgMatrix [][][]uint8, err err
 		}
 	}
 	
-	return
+	return imgMatrix
 }
