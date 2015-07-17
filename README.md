@@ -1,5 +1,6 @@
 # imgo
 golang图像处理工具库，图像相似度计算，图像二值化(golang image process lib)
+
 目前只支持jpg,png
 
 [![GoDoc](http://godoc.org/github.com/Comdex/imgo?status.svg)](http://godoc.org/github.com/Comdex/imgo)
