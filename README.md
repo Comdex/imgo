@@ -39,6 +39,16 @@ func main(){
 	}
 }
 ```
+
+计算两张图片的余弦相似度
+```go
+	cos,err:=imgo.CosineSimilarity("test1.jpg","test2.jpg")
+	if err!=nil{
+		panic(err)
+	}
+	fmt.Println(cos)
+```
+
 ### 效果
 
 <table>
