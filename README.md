@@ -49,6 +49,15 @@ func main(){
 	fmt.Println(cos)
 ```
 
+2015.8.23 update :添加使用感知哈希算法的GetFingerprint函数获取图片的“指纹”字符串
+```go
+	fp,err:=imgo.GetFingerprint("test1.jpg")
+	if err!=nil {
+		panic(err)
+	}
+	fmt.Println(fp)//输出64位的01字符串
+```
+
 ### 效果
 
 <table>
