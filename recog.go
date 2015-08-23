@@ -1,5 +1,9 @@
 package imgo
 
+import (
+	"bytes"
+)
+
 import(
 	"math"
 )
@@ -49,4 +53,39 @@ func Binaryzation(src [][][]uint8, threshold int) [][][]uint8 {
 	}
 	
 	return imgMatrix
+}
+
+//GetFingerprint use Perceptual Hash Algorithm to get fingerprint from a pircture
+func GetFingerprint(src string) (fp string, err error) {
+	imgMatrix, err1 := ResizeForMatrix(src,8,8)
+	if err1 != nil {
+		return "",err1
+	}
+
+	//convert RGB to Gray
+	h,w := len(imgMatrix),len(imgMatrix[0])
+	gray := make([]byte, w*h)
+	for x:=0; x<w; x++ {
+		for y:=0; y<h; y++ {
+			gray[x+y*8] = byte((imgMatrix[x][y][0]*30+imgMatrix[x][y][1]*59+imgMatrix[x][y][2]*11)/100)
+		}
+	}
+	
+	//calculate average value of color of picture
+	sum := 0
+	for _, v := range gray {
+		sum += int(v)
+	}
+	avg := byte(sum / len(gray))
+	
+	var buffer bytes.Buffer
+	for _, v := range gray {
+		if avg >= v {
+			buffer.WriteByte('1')
+		} else {
+			buffer.WriteByte('0')
+		}
+	}
+	fp = buffer.String()
+	return
 }
