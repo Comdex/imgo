@@ -3,10 +3,10 @@ package imgo
 import (
 	"errors"
 	"os"
-	
-	"image/png"
+
 	"image/jpeg"
-	
+	"image/png"
+
 	"image"
 	"image/color"
 )
@@ -19,7 +19,6 @@ func GetImageWidth(img image.Image) int {
 	return img.Bounds().Max.X
 }
 
-
 // decode a image and retrun golang image interface
 func DecodeImage(filePath string) (img image.Image, err error) {
 	reader, err := os.Open(filePath)
@@ -27,8 +26,8 @@ func DecodeImage(filePath string) (img image.Image, err error) {
 		return nil, err
 	}
 	defer reader.Close()
-	
-	img,_,err = image.Decode(reader)
+
+	img, _, err = image.Decode(reader)
 
 	return
 }
@@ -197,81 +196,87 @@ func convertToNRGBA(src image.Image) *image.NRGBA {
 	}
 
 	return dst
-} 
+}
 
-// read a image return a image matrix
-func Read(filepath string)(imgMatrix [][][]uint8 , err error){
-	img,decodeErr:=DecodeImage(filepath)
-	if decodeErr!=nil{
-		err = decodeErr
+// read a image return a image matrix by path or image
+func Read(imgOrPath interface{}) (imgMatrix [][][]uint8, err error) {
+	var img image.Image
+	switch imgOrPath.(type) {
+	case string:
+		img, err = DecodeImage(imgOrPath.(string))
+		if err != nil {
+			return
+		}
+	case image.Image:
+		img = imgOrPath.(image.Image)
+	default:
+		err = errors.New("Incoming parameter error!")
 		return
 	}
-	
-	bounds:=img.Bounds()
-	width:=bounds.Max.X  //width
-	height:=bounds.Max.Y  //height
-	
-	src:=convertToNRGBA(img)
-	imgMatrix = NewRGBAMatrix(height,width)
-	
-	
-	for i:=0;i<height;i++{
-		for j:=0;j<width;j++{
-			c:=src.At(j,i)
-			r,g,b,a:=c.RGBA()
-			imgMatrix[i][j][0]=uint8(r)
-			imgMatrix[i][j][1]=uint8(g)
-			imgMatrix[i][j][2]=uint8(b)
-			imgMatrix[i][j][3]=uint8(a)
-			
+
+	bounds := img.Bounds()
+	width := bounds.Max.X  //width
+	height := bounds.Max.Y //height
+
+	src := convertToNRGBA(img)
+	imgMatrix = NewRGBAMatrix(height, width)
+
+	for i := 0; i < height; i++ {
+		for j := 0; j < width; j++ {
+			c := src.At(j, i)
+			r, g, b, a := c.RGBA()
+			imgMatrix[i][j][0] = uint8(r)
+			imgMatrix[i][j][1] = uint8(g)
+			imgMatrix[i][j][2] = uint8(b)
+			imgMatrix[i][j][3] = uint8(a)
+
 		}
 	}
 	return
 }
 
 // read a image return a image matrix , if appear an error it will panic
-func MustRead(filepath string)(imgMatrix [][][]uint8){
-	img,decodeErr:=DecodeImage(filepath)
-	if decodeErr!=nil{
+func MustRead(filepath string) (imgMatrix [][][]uint8) {
+	img, decodeErr := DecodeImage(filepath)
+	if decodeErr != nil {
 		panic(decodeErr)
 	}
-	
-	bounds:=img.Bounds()
-	width:=bounds.Max.X
-	height:=bounds.Max.Y
-	
-	src:=convertToNRGBA(img)
-	imgMatrix = NewRGBAMatrix(height,width)
-	
-	
-	for i:=0;i<height;i++{
-		for j:=0;j<width;j++{
-			c:=src.At(j,i)
-			r,g,b,a:=c.RGBA()
-			imgMatrix[i][j][0]=uint8(r)
-			imgMatrix[i][j][1]=uint8(g)
-			imgMatrix[i][j][2]=uint8(b)
-			imgMatrix[i][j][3]=uint8(a)
-			
+
+	bounds := img.Bounds()
+	width := bounds.Max.X
+	height := bounds.Max.Y
+
+	src := convertToNRGBA(img)
+	imgMatrix = NewRGBAMatrix(height, width)
+
+	for i := 0; i < height; i++ {
+		for j := 0; j < width; j++ {
+			c := src.At(j, i)
+			r, g, b, a := c.RGBA()
+			imgMatrix[i][j][0] = uint8(r)
+			imgMatrix[i][j][1] = uint8(g)
+			imgMatrix[i][j][2] = uint8(b)
+			imgMatrix[i][j][3] = uint8(a)
+
 		}
 	}
 	return
 }
 
 // save a image matrix as a png , if unsuccessful it will return a error
-func SaveAsPNG(filepath string , imgMatrix [][][]uint8) error {
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	
+func SaveAsPNG(filepath string, imgMatrix [][][]uint8) error {
+	height := len(imgMatrix)
+	width := len(imgMatrix[0])
+
 	if height == 0 || width == 0 {
 		return errors.New("The input of matrix is illegal!")
 	}
-	
-	nrgba:=image.NewNRGBA(image.Rect(0,0,width,height))
-	
-	for i:=0;i<height;i++{
-		for j:=0;j<width;j++{
-			nrgba.SetNRGBA(j,i,color.NRGBA{imgMatrix[i][j][0],imgMatrix[i][j][1],imgMatrix[i][j][2],imgMatrix[i][j][3]})
+
+	nrgba := image.NewNRGBA(image.Rect(0, 0, width, height))
+
+	for i := 0; i < height; i++ {
+		for j := 0; j < width; j++ {
+			nrgba.SetNRGBA(j, i, color.NRGBA{imgMatrix[i][j][0], imgMatrix[i][j][1], imgMatrix[i][j][2], imgMatrix[i][j][3]})
 		}
 	}
 	outfile, err := os.Create(filepath)
@@ -279,33 +284,32 @@ func SaveAsPNG(filepath string , imgMatrix [][][]uint8) error {
 		return err
 	}
 	defer outfile.Close()
-	
-	png.Encode(outfile,nrgba)
-	
+
+	png.Encode(outfile, nrgba)
+
 	return nil
 }
 
+// save a image matrix as a jpeg,if unsuccessful it will return a error,quality must be 1 to 100
+func SaveAsJPEG(filepath string, imgMatrix [][][]uint8, quality int) error {
+	height := len(imgMatrix)
+	width := len(imgMatrix[0])
 
-// save a image matrix as a jpeg,if unsuccessful it will return a error,quality must be 1 to 100 
-func SaveAsJPEG(filepath string , imgMatrix [][][]uint8 , quality int) error {
-	height:=len(imgMatrix)
-	width:=len(imgMatrix[0])
-	
 	if height == 0 || width == 0 {
 		return errors.New("The input of matrix is illegal!")
 	}
-	
+
 	if quality < 1 {
 		quality = 1
 	} else if quality > 100 {
 		quality = 100
-	} 
-	
-	nrgba:=image.NewNRGBA(image.Rect(0,0,width,height))
-	
-	for i:=0;i<height;i++{
-		for j:=0;j<width;j++{
-			nrgba.SetNRGBA(j,i,color.NRGBA{imgMatrix[i][j][0],imgMatrix[i][j][1],imgMatrix[i][j][2],imgMatrix[i][j][3]})
+	}
+
+	nrgba := image.NewNRGBA(image.Rect(0, 0, width, height))
+
+	for i := 0; i < height; i++ {
+		for j := 0; j < width; j++ {
+			nrgba.SetNRGBA(j, i, color.NRGBA{imgMatrix[i][j][0], imgMatrix[i][j][1], imgMatrix[i][j][2], imgMatrix[i][j][3]})
 		}
 	}
 	outfile, err := os.Create(filepath)
@@ -313,8 +317,8 @@ func SaveAsJPEG(filepath string , imgMatrix [][][]uint8 , quality int) error {
 		return err
 	}
 	defer outfile.Close()
-	
-	jpeg.Encode(outfile,nrgba,&jpeg.Options{Quality:quality})
-	
+
+	jpeg.Encode(outfile, nrgba, &jpeg.Options{Quality: quality})
+
 	return nil
 }
