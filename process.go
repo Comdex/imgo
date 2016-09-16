@@ -41,6 +41,20 @@ func NegativeFilmEffect(src [][][]uint8) [][][]uint8 {
 	return imgMatrix
 }
 
+func Rotate(src [][][]uint8) [][][]uint8 {
+	height := len(src)
+	width := len(src[0])
+	imgMatrix := NewRGBAMatrix(width,height)
+	
+	for i:=0;i<width;i++{
+		for j:=0;j<height;j++{
+			imgMatrix[i][j] = src[j][i]
+		}
+	}
+	
+	return imgMatrix
+}
+
 func AdjustBrightness(src [][][]uint8 , light float64)(imgMatrix [][][]uint8 , err error) {
 	
 	if light <= 0{
@@ -94,7 +108,6 @@ func ImageFusion(src1 string , src2 string)(imgMatrix [][][]uint8 , err error) {
 	imgMatrix = imgMatrix1
 	return	
 }
-
 
 func VerticalMirror(src [][][]uint8) [][][]uint8 {
 	height := len(src)
