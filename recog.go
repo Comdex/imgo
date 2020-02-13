@@ -2,28 +2,60 @@ package imgo
 
 import (
 	"bytes"
-)
-
-import (
 	"math"
 )
 
+func convertImg2Vector(src string) ([]uint8, error) {
+	imgMatrix, err := ResizeForMatrix(src, 8, 8)
+	if err != nil {
+		return nil, err
+	}
+
+	//convert RGB to Gray
+	h, w := len(imgMatrix), len(imgMatrix[0])
+	length := w * h
+	gray := make([]byte, length)
+	for x := 0; x < w; x++ {
+		for y := 0; y < h; y++ {
+			gray[x+y*8] = byte((imgMatrix[x][y][0]*30 + imgMatrix[x][y][1]*59 + imgMatrix[x][y][2]*11) / 100)
+		}
+	}
+
+	//calculate average value of color of picture
+	sum := 0
+	for _, v := range gray {
+		sum += int(v)
+	}
+	avg := byte(sum / len(gray))
+
+	vector := make([]uint8, length)
+	i := 0
+	for _, v := range gray {
+		if avg >= v {
+			vector[i] = 1
+		} else {
+			vector[i] = 0
+		}
+		i++
+	}
+
+	return vector, nil
+}
+
 //calculate Cosine Similarity of two images, input two file path
 func CosineSimilarity(src1 string, src2 string) (cossimi float64, err error) {
-	matrix1, err1 := ResizeForMatrix(src1, 80, 60)
+	myx, err1 := convertImg2Vector(src1)
 	if err1 != nil {
 		err = err1
 		return
 	}
 
-	matrix2, err2 := ResizeForMatrix(src2, 120, 90)
+	myy, err2 := convertImg2Vector(src2)
 	if err2 != nil {
 		err = err2
 		return
 	}
 
-	myx := Matrix2Vector(matrix1)
-	myy := Matrix2Vector(matrix2)
 	cos1 := Dot(myx, myy)
 	cos21 := math.Sqrt(Dot(myx, myx))
 	cos22 := math.Sqrt(Dot(myy, myy))
